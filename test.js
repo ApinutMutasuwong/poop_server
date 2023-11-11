@@ -1,31 +1,35 @@
 const WebSocket = require('ws');
 const http = require('http');
 
-const server = http.createServer();
+// Create an HTTP server
+const server = http.createServer((req, res) => {
+  res.writeHead(200, { 'Content-Type': 'text/plain' });
+  res.end('WebSocket server is running');
+});
+
+// Create a WebSocket server by passing the HTTP server
 const wss = new WebSocket.Server({ server });
 
+// WebSocket connection handling
 wss.on('connection', (ws) => {
-  console.log('WebSocket connection established');
+  console.log('Client connected');
 
-  // Send a welcome message to the connected client
-  ws.send('Welcome to the WebSocket server!');
-
-  // Listen for messages from the client
+  // Handle messages from the client
   ws.on('message', (message) => {
-    console.log('Received message:', message);
+    console.log(`Received: ${message}`);
 
-    // Send a response back to the client
-    ws.send(`You said: ${message}`);
+    // Echo the message back to the client
+    ws.send(`Server: ${message}`);
   });
 
-  // Listen for the WebSocket connection to close
+  // Handle disconnection
   ws.on('close', () => {
-    console.log('WebSocket connection closed');
+    console.log('Client disconnected');
   });
 });
 
+// Start the server on port 4000
 const PORT = 4000;
-
 server.listen(PORT, () => {
   console.log(`WebSocket server is listening on port ${PORT}`);
 });
