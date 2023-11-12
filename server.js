@@ -22,7 +22,7 @@ wss.on('connection', (ws) => {
 });
 
 // Start the HTTPS server on port 443 (or your desired port)
-const PORT = process.env.PORT || 443;
+const PORT = process.env.PORT || 4000;
 server.listen(PORT, () => {
   console.log(`Server running on https://localhost:${PORT}`);
 });
