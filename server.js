@@ -20,3 +20,9 @@ wss.on('connection', (ws) => {
     console.log('WebSocket connection closed');
   });
 });
+
+// Start the HTTPS server on port 443 (or your desired port)
+const PORT = process.env.PORT || 443;
+server.listen(PORT, () => {
+  console.log(`Server running on https://localhost:${PORT}`);
+});
