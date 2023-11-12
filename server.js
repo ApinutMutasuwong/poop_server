@@ -1,7 +1,8 @@
-const WebSocket = require('ws');
 const http = require('http');
+const WebSocket = require('ws');
 
 const server = http.createServer();
+
 const wss = new WebSocket.Server({ server });
 
 wss.on('connection', (ws) => {
@@ -20,11 +21,14 @@ wss.on('connection', (ws) => {
 
 const PORT = 4000;
 
-server.listen(PORT, () => {
-  console.log(`WebSocket server listening on port ${PORT}`);
+// Listen for incoming HTTP requests
+server.on('request', (req, res) => {
+  // You can handle HTTP requests here if needed
 });
 
-server.listen(4000, () => {
-  console.log('Server is listening on port 4000');
-});
-
+// Start the server only if it's not already listening
+if (!module.parent) {
+  server.listen(PORT, () => {
+    console.log(`WebSocket server listening on port ${PORT}`);
+  });
+}
