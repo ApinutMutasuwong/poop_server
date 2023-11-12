@@ -1,25 +1,32 @@
 const fs = require('fs');
 const https = require('https');
-const WebSocket = require('ws'); // Import the WebSocket module
+const WebSocket = require('ws');
+const cors = require('cors');
 
 const server = https.createServer({
   cert: fs.readFileSync('../certificate.crt'),
   key: fs.readFileSync('../private.key')
 });
 
-const wss = new WebSocket.Server({ server });
+const wss = new WebSocket.Server({ noServer: true });
+
+// Apply CORS middleware to handle the WebSocket handshake
+server.on('upgrade', (request, socket, head) => {
+  cors()(request, null, () => {
+    wss.handleUpgrade(request, socket, head, (ws) => {
+      wss.emit('connection', ws, request);
+    });
+  });
+});
 
 wss.on('connection', (ws) => {
-  // WebSocket connection handling
   console.log('WebSocket connection established');
 
   ws.on('message', (message) => {
-    // Handle WebSocket messages
     console.log(`Received message: ${message}`);
   });
 
   ws.on('close', () => {
-    // Handle WebSocket connection closure
     console.log('WebSocket connection closed');
   });
 });
