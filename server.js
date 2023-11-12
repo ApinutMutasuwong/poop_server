@@ -1,5 +1,6 @@
-const https = require('https');
 const fs = require('fs');
+const https = require('https');
+const WebSocket = require('ws'); // Import the WebSocket module
 
 const server = https.createServer({
   cert: fs.readFileSync('../certificate.crt'),
@@ -9,19 +10,20 @@ const server = https.createServer({
 const wss = new WebSocket.Server({ server });
 
 wss.on('connection', (ws) => {
-  console.log('Client connected');
+  // WebSocket connection handling
+  console.log('WebSocket connection established');
 
   ws.on('message', (message) => {
+    // Handle WebSocket messages
     console.log(`Received message: ${message}`);
-    // You can process the message here and send a response if needed
-    ws.send('Server received your message');
   });
 
   ws.on('close', () => {
-    console.log('Client disconnected');
+    // Handle WebSocket connection closure
+    console.log('WebSocket connection closed');
   });
 });
 
 server.listen(4000, () => {
-  console.log('Server listening on port 4000');
+  console.log('Server is listening on port 4000');
 });
