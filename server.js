@@ -2,8 +2,8 @@ const https = require('https');
 const fs = require('fs');
 
 const server = https.createServer({
-  cert: fs.readFileSync('/home/ubuntu/poop_server/certificate.crt'),
-  key: fs.readFileSync('/home/ubuntu/poop_server/private.key')
+  cert: fs.readFileSync('../certificate.crt'),
+  key: fs.readFileSync('../private.key')
 });
 
 const wss = new WebSocket.Server({ server });
